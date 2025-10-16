@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feria - Secciones con QR Maps</title>
+
+  <link rel="stylesheet" href="estilos.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <header>
+    <div class="brand"> 
+      <img src="https://tse1.mm.bing.net/th/id/OIP.a1j8yn5Z2EwXZZqCcNQVUwHaHa?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" alt="logo">
+      <div>Presencia de Oaxaca</div>
+    </div>
+  </header>
+
+  <section class="hero"> 
+    <video class="hero-video-bg" autoplay muted loop playsinline src="ima/guela.mp4"></video>
+    <div class="hero-overlay"></div>
+    <div class="hero-inner">
+      <h1>Descubre la feria de Oaxaca al instante</h1>
+      <p class="lead">Explora stands, talleres, música y compra boletos de los conciertos — todo desde tu dispositivo.</p>
+    </div>
+  </section>
+
+  <div class="grid" id="sectionsGrid">
+   
+    <article class="card">
+      <div class="card-media"><img src="ima/taqueria.webp" alt="Tacos Don Chuy"></div>
+      <div class="card-body">
+        <div class="card-type">Gastronomía</div>
+        <h3>Tacos Don Chuy</h3>
+        <p>Taquitos a la orden.</p>
+        <div class="card-footer">
+          <div>$24 la orden</div>
+          <div><button class="btn-view" data-stand="https://maps.app.goo.gl/VebzjoMmqj6C2u7U9">Ver Stand</button></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-media"><img src="ima/alebrijes.webp" alt="Alebrijes La Nube"></div>
+      <div class="card-body">
+        <div class="card-type">Artesanía</div>
+        <h3>Alebrijes La Nube</h3>
+        <p>Alebrijes pintados a mano por artesanos locales.</p>
+        <div class="card-footer">
+          <div></div>
+          <div><button class="btn-view" data-stand="https://maps.app.goo.gl/FybA9Q4r9VkxFboZ7">Ver Stand</button></div>
+        </div>
+      </div>
+    </article>
+
+ 
+    <article class="card">
+      <div class="card-media"><img src="ima/musica.webp" alt="Concierto Banda de la Costa"></div>
+      <div class="card-body">
+        <div class="card-type">Música</div>
+        <h3>Concierto: Banda de la Costa</h3>
+        <p>Disfruta música oaxaqueña en vivo.</p>
+        <div class="card-footer">
+          <div>$200</div>
+          <div><button class="btn-view" data-stand="https://maps.app.goo.gl/1X8vn9ArFNLpb9RG7">Ver Stand</button></div>
+        </div>
+      </div>
+    </article>
+ 
+    <article class="card">
+      <div class="card-media"><img src="ima/textiles.webp" alt="Taller de Textiles"></div>
+      <div class="card-body">
+        <div class="card-type">Taller</div>
+        <h3>Taller de Textiles</h3>
+        <p>Aprende bordado tradicional y técnicas ancestrales.</p>
+        <div class="card-footer">
+          <div></div>
+          <div><button class="btn-view" data-stand="https://maps.app.goo.gl/bmjeYmSPX6uPjvUn6">Ver Stand</button></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-media"><img src="ima/canasta.webp" alt="Canasta Oaxaqueña"></div>
+      <div class="card-body">
+        <div class="card-type">Tienda</div>
+        <h3>Canasta Oaxaqueña</h3>
+        <p>Productos locales seleccionados cuidadosamente.</p>
+        <div class="card-footer">
+          <div></div>
+          <div><button class="btn-view" data-stand="https://maps.app.goo.gl/q6DfUtnFDbPn88W78">Ver Stand</button></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-media"><img src="ima/ruta.webp" alt="Ruta Gastronómica"></div>
+      <div class="card-body">
+        <div class="card-type">Ruta</div>
+        <h3>Ruta Gastronómica</h3>
+        <p>Tour guiado con degustaciones típicas de Oaxaca.</p>
+        <div class="card-footer">
+          <div></div>
+          <div><button class="btn-view" data-stand="https://maps.app.goo.gl/YwXnxgNGj1QJ4npf9">Ver Stand</button></div>
+        </div>
+      </div>
+    </article>
+  </div>
+
+ 
+  <div class="modal-qr" id="modalQR">
+    <div class="modal-content">
+      <span class="close-qr">&times;</span>
+      <h3 id="qrTitle">Escanea el código QR para abrir la ubicación</h3>
+      <div id="qrCode"></div>
+    </div>
+  </div>
+
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <script>
+    const modal = document.getElementById("modalQR");
+    const closeQR = document.querySelector(".close-qr");
+    const qrContainer = document.getElementById("qrCode");
+    const buttons = document.querySelectorAll(".btn-view");
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const url = btn.getAttribute("data-stand");
+
+        // Limpiar QR anterior
+        qrContainer.innerHTML = "";
+
+        // Generar nuevo QR con el enlace del stand
+        new QRCode(qrContainer, {
+          text: url,
+          width: 200,
+          height: 200
+        });
+
+        modal.style.display = "block";
+      });
+    });
+
+    // Cerrar modal
+    closeQR.addEventListener("click", () => {
+      modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    });
+  </script>
+</body>
+
+</html>
